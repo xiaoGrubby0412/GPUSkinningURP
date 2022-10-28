@@ -44,6 +44,7 @@ Shader "XingWo/Object_PBR_Simplelify"
 			#pragma multi_compile _ DIRLIGHTMAP_COMBINED
 			#pragma multi_compile _ LIGHTMAP_ON
 
+			#pragma multi_compile ROOTON_BLENDOFF ROOTON_BLENDON_CROSSFADEROOTON ROOTON_BLENDON_CROSSFADEROOTOFF ROOTOFF_BLENDOFF ROOTOFF_BLENDON_CROSSFADEROOTON ROOTOFF_BLENDON_CROSSFADEROOTOFF
 			#pragma vertex vert
 			#pragma fragment frag
 
@@ -54,7 +55,9 @@ Shader "XingWo/Object_PBR_Simplelify"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/ShaderGraphFunctions.hlsl"
 
 			#include "Packages/com.unity.shadergraph/ShaderGraphLibrary/Functions.hlsl"
-
+			
+			#include "Assets/GPUSkinning/Resources/GPUSkinningInclude.cginc"
+			
 			struct VertexInput
 			{
 				float4 vertex : POSITION;
@@ -62,6 +65,7 @@ Shader "XingWo/Object_PBR_Simplelify"
 				float4 ase_tangent : TANGENT;
 				float4 texcoord1 : TEXCOORD1;
 				float4 texcoord : TEXCOORD0;
+				float4 texcoord2 : TEXCOORD2;
 			};
 
 			struct VertexOutput
@@ -98,6 +102,17 @@ Shader "XingWo/Object_PBR_Simplelify"
 
 			VertexOutput vert( VertexInput v  )
 			{
+				float4 normal = float4(v.ase_normal, 0);
+				float4 tangent = float4(v.ase_tangent.xyz, 0);
+
+				float4 pos = skin4(v.vertex, v.texcoord1, v.texcoord2);
+				normal = skin4(normal, v.texcoord1, v.texcoord2);
+				tangent = skin4(tangent, v.texcoord1, v.texcoord2);
+
+				v.vertex = pos;
+				v.ase_normal = normal.xyz;
+				v.ase_tangent = float4(tangent.xyz, v.ase_tangent.w);
+				
 				VertexOutput o = (VertexOutput)0;
 
 				o.ase_texcoord7.xy = v.texcoord.xy;//UV
@@ -215,7 +230,8 @@ Shader "XingWo/Object_PBR_Simplelify"
 			AlphaToMask Off
 
 			HLSLPROGRAM
-			
+
+			#pragma multi_compile ROOTON_BLENDOFF ROOTON_BLENDON_CROSSFADEROOTON ROOTON_BLENDON_CROSSFADEROOTOFF ROOTOFF_BLENDOFF ROOTOFF_BLENDON_CROSSFADEROOTON ROOTOFF_BLENDON_CROSSFADEROOTOFF
 			#pragma vertex vert
 			#pragma fragment frag
 
@@ -224,10 +240,15 @@ Shader "XingWo/Object_PBR_Simplelify"
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/ShaderGraphFunctions.hlsl"
 			#include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Color.hlsl"
 
+			#include "Assets/GPUSkinning/Resources/GPUSkinningInclude.cginc"
 			struct VertexInput
 			{
 				float4 vertex : POSITION;
 				float3 ase_normal : NORMAL;
+				float4 ase_tangent : TANGENT;
+				float4 texcoord1 : TEXCOORD1;
+				float4 texcoord : TEXCOORD0;
+				float4 texcoord2 : TEXCOORD2;
 			};
 
 			struct VertexOutput
@@ -250,6 +271,17 @@ Shader "XingWo/Object_PBR_Simplelify"
 
 			VertexOutput vert( VertexInput v )
 			{
+				float4 normal = float4(v.ase_normal, 0);
+				float4 tangent = float4(v.ase_tangent.xyz, 0);
+
+				float4 pos = skin4(v.vertex, v.texcoord1, v.texcoord2);
+				normal = skin4(normal, v.texcoord1, v.texcoord2);
+				tangent = skin4(tangent, v.texcoord1, v.texcoord2);
+
+				v.vertex = pos;
+				v.ase_normal = normal.xyz;
+				v.ase_tangent = float4(tangent.xyz, v.ase_tangent.w);
+				
 				VertexOutput o;
 
 				float3 positionWS = TransformObjectToWorld( v.vertex.xyz );
