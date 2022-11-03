@@ -13,7 +13,7 @@ public class Adam_Player_NPC : MonoBehaviour
 	private void Start () 
 	{
 		player = GetComponent<GPUSkinningPlayerMono>().Player;
-		player.Play("Idle");
+		player.Play("run");
 
 		actionTime = Random.Range(5, 30);
 	}
@@ -27,25 +27,25 @@ public class Adam_Player_NPC : MonoBehaviour
 			float rnd = Random.value;
 			if(rnd < 0.25f)
 			{
-				player.CrossFade("TurnOnSpotLeftA", 0.2f);
+				player.CrossFade("run", 0.2f);
 			}
 			else if(rnd < 0.5f)
 			{
-				player.CrossFade("TurnOnSpotRightA", 0.2f);
+				player.CrossFade("run", 0.2f);
 			}
 			else if(rnd < 0.75f)
 			{
-				player.CrossFade("TurnOnSpotRightC", 0.2f);
+				player.CrossFade("run", 0.2f);
 			}
 			else
 			{
-				player.CrossFade("TurnOnSpotLeftC", 0.2f);
+				player.CrossFade("run", 0.2f);
 			}
 		}
 
 		if(player.IsTimeAtTheEndOfLoop)
 		{
-			player.CrossFade("Idle", 0.8f);
+			player.CrossFade("run", 0.8f);
 		}
 	}
 }

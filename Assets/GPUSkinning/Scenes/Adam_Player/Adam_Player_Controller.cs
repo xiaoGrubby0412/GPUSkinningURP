@@ -30,7 +30,7 @@ public class Adam_Player_Controller : MonoBehaviour
         camOffsetPos = camTransform.position - thisTransform.position;
 
         player = GetComponent<GPUSkinningPlayerMono>().Player;
-        player.Play("Idle");
+        player.Play("idle");
 	}
 	
 	private void Update ()
@@ -105,7 +105,7 @@ public class Adam_Player_Controller : MonoBehaviour
             }
             else
             {
-                player.CrossFade("Idle", 0.2f);
+                player.CrossFade("idle", 0.2f);
             }
         }
         if(forwardSpeed > 0 && forwardSpeed <= 0.4f)
@@ -124,7 +124,7 @@ public class Adam_Player_Controller : MonoBehaviour
             }
             else
             {
-                player.CrossFade("Walk", 0.2f);
+                player.CrossFade("run", 0.2f);
             }
         }
         if(forwardSpeed > 0.4f)
@@ -143,7 +143,7 @@ public class Adam_Player_Controller : MonoBehaviour
             }
             else
             {
-                player.CrossFade("Run", 0.2f);
+                player.CrossFade("run", 0.2f);
             }
         }
 	}

@@ -7,19 +7,19 @@ public class GPUSkinningPlayerMono : MonoBehaviour
 {
     [HideInInspector]
     [SerializeField]
-    private GPUSkinningAnimation anim = null;
+    public GPUSkinningAnimation anim = null;
 
     [HideInInspector]
     [SerializeField]
-    private Mesh mesh = null;
+    public Mesh mesh = null;
 
     [HideInInspector]
     [SerializeField]
-    private Material mtrl = null;
+    public Material mtrl = null;
 
     [HideInInspector]
     [SerializeField]
-    private TextAsset textureRawData = null;
+    public TextAsset textureRawData = null;
 
     [HideInInspector]
     [SerializeField]
@@ -27,11 +27,11 @@ public class GPUSkinningPlayerMono : MonoBehaviour
 
     [HideInInspector]
     [SerializeField]
-    private bool rootMotionEnabled = false;
+    public bool rootMotionEnabled = false;
 
     [HideInInspector]
     [SerializeField]
-    private bool lodEnabled = true;
+    public bool lodEnabled = true;
 
     [HideInInspector]
     [SerializeField]
