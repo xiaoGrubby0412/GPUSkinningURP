@@ -45,6 +45,11 @@ public class TestAvatarPool : MonoBehaviour
             NetworkAvatar avatar = RemoveAvatar(mono);
             AvatarPool.Instance.RecycleAvatar(avatar);
         }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            AvatarPool.Instance.OnDestroy();
+        }
     }
 
     private NetworkAvatar RemoveAvatar(GPUSkinningPlayerMono mono)

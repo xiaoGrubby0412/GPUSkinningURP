@@ -111,7 +111,7 @@ public class AvatarPool
         GPUSkinningPlayerMono mono = CreateAvatarByID(avatarID);
         mono.gameObject.SetActive(false);
         mono.transform.SetParent(PoolRootTrans);
-        NetworkAvatar avatar = new NetworkAvatar();
+        NetworkAvatar avatar = mono.gameObject.AddComponent<NetworkAvatar>();
         avatar.avatarID = avatarID;
         avatar.mono = mono;
         return avatar;
@@ -131,14 +131,14 @@ public class AvatarPool
 
         if (rId != -1)
         {
-            NetworkAvatar rMono = lst[rId]; 
+            NetworkAvatar avatar = lst[rId]; 
             lst.RemoveAt(rId);
-            return rMono;
+            return avatar;
         }
         else
         {
             GPUSkinningPlayerMono mono = CreateAvatarByID(avatarID);
-            NetworkAvatar avatar = new NetworkAvatar();
+            NetworkAvatar avatar = mono.gameObject.AddComponent<NetworkAvatar>();
             avatar.avatarID = avatarID;
             avatar.mono = mono;
             return avatar;   
@@ -151,6 +151,17 @@ public class AvatarPool
         avatar.mono.Player.Play("idle");
         avatar.mono.gameObject.SetActive(false);
         avatar.mono.transform.SetParent(PoolRootTrans);
+    }
+
+    public void OnDestroy()
+    {
+        if (lst != null && lst.Count > 0)
+        {
+            for (int i = 0; i < lst.Count; i++)
+            {
+                GameObject.Destroy(lst[i].gameObject);
+            }
+        }
     }
 
 }
