@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using GPUSkinning.AvatarPool;
+using ET.Client;
 using UnityEngine;
 
 public class TestAvatarPool : MonoBehaviour

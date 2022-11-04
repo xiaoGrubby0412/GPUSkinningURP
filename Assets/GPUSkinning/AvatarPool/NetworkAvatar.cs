@@ -1,4 +1,4 @@
-﻿namespace GPUSkinning.AvatarPool
+﻿namespace ET.Client
 {
     public class NetworkAvatar
     {

@@ -1,8 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using GPUSkinning.AvatarPool;
-using Unity.Mathematics;
 using UnityEngine;
+using ET.Client;
 
 public class AvatarPool
 {
@@ -48,7 +47,7 @@ public class AvatarPool
 
         PoolRootTrans = new GameObject("PoolRoot").transform;
         PoolRootTrans.position = Vector3.zero;
-        PoolRootTrans.rotation = quaternion.identity;
+        PoolRootTrans.rotation = Quaternion.identity;
         PoolRootTrans.localScale = Vector3.one;
         
         lst = new List<NetworkAvatar>(ids.Length * cacheCount);
