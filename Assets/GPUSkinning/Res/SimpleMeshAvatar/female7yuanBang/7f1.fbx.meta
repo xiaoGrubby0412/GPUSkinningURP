@@ -22,12 +22,12 @@ ModelImporter:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: texture_kd_
-    second: {fileID: 2800000, guid: 0a91b5790fdc5db43ba5c5d7f553aa8f, type: 3}
+    second: {fileID: 2800000, guid: 15430909a2677394094457f8e623a1b7, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: texture_n_
-    second: {fileID: 2800000, guid: 2465de205900eff4d95f65986c3e15f6, type: 3}
+    second: {fileID: 2800000, guid: 9d6ff2c35aeaf0b43b02e3d76a70ca30, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -119,7 +119,7 @@ ModelImporter:
       takeName: Armature|run
       internalID: 0
       firstFrame: 0
-      lastFrame: 21
+      lastFrame: 17
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

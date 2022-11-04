@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 4713a79e61ffc6f4ebc98e36fd4869d9
+guid: eef2317a5bb1e1c4bb6c14b283d7485c
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable:
@@ -17,17 +17,17 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: mat
-    second: {fileID: 2100000, guid: ef599003c8e5ff74c9ffdd08612e60b2, type: 2}
+    second: {fileID: 2100000, guid: e8438752f9ef03043b8af44655b518af, type: 2}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: texture_kd_
-    second: {fileID: 2800000, guid: 9e82af3c76486c4459540bf8aff1ba2a, type: 3}
+    second: {fileID: 2800000, guid: ff2ffbd4d42d31942857ffb9e2badabd, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: texture_n_
-    second: {fileID: 2800000, guid: 2d28c001e038b854a8a3f892171fe790, type: 3}
+    second: {fileID: 2800000, guid: 06c1fd4305faf7d429879ed43fde0c32, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -119,7 +119,7 @@ ModelImporter:
       takeName: Armature|run
       internalID: 0
       firstFrame: 0
-      lastFrame: 21
+      lastFrame: 17
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
