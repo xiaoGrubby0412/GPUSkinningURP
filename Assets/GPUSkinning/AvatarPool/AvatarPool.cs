@@ -32,10 +32,27 @@ public class AvatarPool
 
     private Transform PoolRootTrans;
     private ulong[] ids = new ulong[] { 10000, 10001, 10002, 10003, 10004, 10005, 10006, 10007 };
-    private int cacheCount = 2;
+    private int cacheCount = 10;
     private List<NetworkAvatar> lst;
     public void Init()
     {
+        // string path = AvatarProc.GetPlayerAvatarModelName(10000);
+        // f5 = ABResources.Load<UnityEngine.Object>(path);
+        // path = AvatarProc.GetPlayerAvatarModelName(10001);
+        // f7 = ABResources.Load<UnityEngine.Object>(path);
+        // path = AvatarProc.GetPlayerAvatarModelName(10002);
+        // f3 = ABResources.Load<UnityEngine.Object>(path);
+        // path = AvatarProc.GetPlayerAvatarModelName(10003);
+        // m5 = ABResources.Load<UnityEngine.Object>(path);
+        // path = AvatarProc.GetPlayerAvatarModelName(10004);
+        // m7 = ABResources.Load<UnityEngine.Object>(path);
+        // path = AvatarProc.GetPlayerAvatarModelName(10005);
+        // m3 = ABResources.Load<UnityEngine.Object>(path);
+        // path = AvatarProc.GetPlayerAvatarModelName(10006);
+        // f7YuanBang = ABResources.Load<UnityEngine.Object>(path);
+        // path = AvatarProc.GetPlayerAvatarModelName(10007);
+        // m7YuanBang = ABResources.Load<UnityEngine.Object>(path);
+            
         f5 = Resources.Load("female5");
         f7 = Resources.Load("female7"); 
         f3 = Resources.Load("female3");
@@ -46,6 +63,7 @@ public class AvatarPool
         m7YuanBang = Resources.Load("male7YuanBang");
 
         PoolRootTrans = new GameObject("PoolRoot").transform;
+        GameObject.DontDestroyOnLoad(PoolRootTrans.gameObject);
         PoolRootTrans.position = Vector3.zero;
         PoolRootTrans.rotation = Quaternion.identity;
         PoolRootTrans.localScale = Vector3.one;
@@ -141,6 +159,7 @@ public class AvatarPool
             NetworkAvatar avatar = mono.gameObject.AddComponent<NetworkAvatar>();
             avatar.avatarID = avatarID;
             avatar.mono = mono;
+            avatar.gameObject.layer = LayerMask.NameToLayer("Player");
             return avatar;   
         }
     }
@@ -148,7 +167,10 @@ public class AvatarPool
     public void RecycleAvatar(NetworkAvatar avatar)
     {
         lst.Add(avatar);
-        avatar.mono.Player.Play("idle");
+        if (avatar.mono.Player != null)
+        {
+            avatar.mono.Player.Play("idle");   
+        }
         avatar.mono.gameObject.SetActive(false);
         avatar.mono.transform.SetParent(PoolRootTrans);
     }

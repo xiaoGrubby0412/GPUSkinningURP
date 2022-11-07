@@ -33,23 +33,42 @@ public class TestAvatarPool : MonoBehaviour
                 new Vector3(Random.Range(0f, 10f), Random.Range(0f, 10f), Random.Range(0f, 10f));
             avatar.mono.gameObject.SetActive(true);
             //mono.Player.CrossFade("run", 0.1f);
-            StartCoroutine(PlayAnim(avatar.mono));
+            //StartCoroutine(PlayAnim(avatar.mono));
             lst.Add(avatar);
+            
+            RecycleAvatar();
+        }
+
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            NetworkAvatar avatar = AvatarPool.Instance.GetAvatar(10000);
+            avatar.mono.transform.SetParent(root);
+            avatar.mono.transform.localScale = Vector3.one;
+            avatar.mono.transform.localRotation = Quaternion.identity;
+            avatar.mono.transform.localPosition =
+                new Vector3(Random.Range(0f, 10f), Random.Range(0f, 10f), Random.Range(0f, 10f));
+            avatar.mono.gameObject.SetActive(true);
+            lst.Add(avatar);
+            StartCoroutine(PlayAnim(avatar.mono));
         }
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            //test recycle
-            //int idx = Random.Range(0, root.childCount);
-            GPUSkinningPlayerMono mono = root.GetChild(0).GetComponent<GPUSkinningPlayerMono>();
-            NetworkAvatar avatar = RemoveAvatar(mono);
-            AvatarPool.Instance.RecycleAvatar(avatar);
+            RecycleAvatar();
         }
 
         if (Input.GetKeyDown(KeyCode.E))
         {
             AvatarPool.Instance.OnDestroy();
         }
+    }
+    
+    private void RecycleAvatar()
+    {
+        //test recycle
+        GPUSkinningPlayerMono mono = root.GetChild(0).GetComponent<GPUSkinningPlayerMono>();
+        NetworkAvatar avatar = RemoveAvatar(mono);
+        AvatarPool.Instance.RecycleAvatar(avatar);
     }
 
     private NetworkAvatar RemoveAvatar(GPUSkinningPlayerMono mono)
