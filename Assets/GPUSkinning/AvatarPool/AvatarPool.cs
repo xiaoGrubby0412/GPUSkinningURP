@@ -78,6 +78,13 @@ public class AvatarPool
 
         //lst = new List<NetworkAvatar>(ids.Length * cacheCount);
         
+        AddAvatarToPool();
+
+        ifInited = true;
+    }
+
+    public void AddAvatarToPool()
+    {
         for (int j = 0; j < ids.Length; j++)
         {
             for (int i = 0; i < cacheCount; i++)
@@ -87,8 +94,6 @@ public class AvatarPool
                 GetQArrayByID(ids[j]).Enqueue(avatar);
             }
         }
-
-        ifInited = true;
     }
 
     private Queue<NetworkAvatar> GetQArrayByID(ulong id)

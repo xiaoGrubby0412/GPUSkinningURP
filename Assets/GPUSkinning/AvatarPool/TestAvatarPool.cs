@@ -39,6 +39,11 @@ public class TestAvatarPool : MonoBehaviour
             RecycleAvatar();
         }
 
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            AvatarPool.Instance.AddAvatarToPool();
+        }
+
         if (Input.GetKeyDown(KeyCode.T))
         {
             NetworkAvatar avatar = AvatarPool.Instance.GetAvatar(10000);
