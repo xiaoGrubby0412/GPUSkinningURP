@@ -33,7 +33,9 @@ public class AvatarPool
     private Transform PoolRootTrans;
     private ulong[] ids = new ulong[] { 10000, 10001, 10002, 10003, 10004, 10005, 10006, 10007 };
     private int cacheCount = 10;
-    private List<NetworkAvatar> lst;
+    //private List<NetworkAvatar> lst;
+    private Queue<NetworkAvatar>[] qArray;
+    
     public void Init()
     {
         // string path = AvatarProc.GetPlayerAvatarModelName(10000);
@@ -68,18 +70,50 @@ public class AvatarPool
         PoolRootTrans.rotation = Quaternion.identity;
         PoolRootTrans.localScale = Vector3.one;
         
-        lst = new List<NetworkAvatar>(ids.Length * cacheCount);
+        qArray = new Queue<NetworkAvatar>[8];
+        for (int i = 0; i < qArray.Length; i++)
+        {
+            qArray[i] = new Queue<NetworkAvatar>();
+        }
+
+        //lst = new List<NetworkAvatar>(ids.Length * cacheCount);
         
         for (int j = 0; j < ids.Length; j++)
         {
             for (int i = 0; i < cacheCount; i++)
             {
                 NetworkAvatar avatar = CacheAvatar(ids[j]);
-                lst.Add(avatar);
+                //lst.Add(avatar);
+                GetQArrayByID(ids[j]).Enqueue(avatar);
             }
         }
 
         ifInited = true;
+    }
+
+    private Queue<NetworkAvatar> GetQArrayByID(ulong id)
+    {
+        switch (id)
+        {
+            case 10000:
+                return qArray[0];
+            case 10001:
+                return qArray[1];
+            case 10002:
+                return qArray[2];
+            case 10003:
+                return qArray[3];
+            case 10004:
+                return qArray[4];
+            case 10005:
+                return qArray[5];
+            case 10006:
+                return qArray[6];
+            case 10007:
+                return qArray[7];
+            default:
+                return qArray[0];
+        }
     }
 
     public GPUSkinningPlayerMono CreateAvatarByID(ulong avatarID)
@@ -113,6 +147,9 @@ public class AvatarPool
             case 10007:
                 obj = m7YuanBang;
                 break;
+            default:
+                obj = f5;
+                break;
         }
 
         if (obj == null)
@@ -137,36 +174,50 @@ public class AvatarPool
 
     public NetworkAvatar GetAvatar(ulong avatarID)
     {
-        int rId = -1;
-        for (int i = 0; i < lst.Count; i++)
+        Queue<NetworkAvatar> queue = GetQArrayByID(avatarID);
+        if (queue.Count > 0)
         {
-            if (lst[i] != null && lst[i].avatarID == avatarID)
-            {
-                rId = i;
-                break;
-            }
+            return queue.Dequeue();
         }
+        
+        GPUSkinningPlayerMono mono = CreateAvatarByID(avatarID);
+        NetworkAvatar avatar = mono.gameObject.AddComponent<NetworkAvatar>();
+        avatar.avatarID = avatarID;
+        avatar.mono = mono;
+        avatar.gameObject.layer = LayerMask.NameToLayer("Player");
+        return avatar;   
 
-        if (rId != -1)
-        {
-            NetworkAvatar avatar = lst[rId]; 
-            lst.RemoveAt(rId);
-            return avatar;
-        }
-        else
-        {
-            GPUSkinningPlayerMono mono = CreateAvatarByID(avatarID);
-            NetworkAvatar avatar = mono.gameObject.AddComponent<NetworkAvatar>();
-            avatar.avatarID = avatarID;
-            avatar.mono = mono;
-            avatar.gameObject.layer = LayerMask.NameToLayer("Player");
-            return avatar;   
-        }
+        // int rId = -1;
+        // for (int i = 0; i < lst.Count; i++)
+        // {
+        //     if (lst[i] != null && lst[i].avatarID == avatarID)
+        //     {
+        //         rId = i;
+        //         break;
+        //     }
+        // }
+        //
+        // if (rId != -1)
+        // {
+        //     NetworkAvatar avatar = lst[rId]; 
+        //     lst.RemoveAt(rId);
+        //     return avatar;
+        // }
+        // else
+        // {
+        //     GPUSkinningPlayerMono mono = CreateAvatarByID(avatarID);
+        //     NetworkAvatar avatar = mono.gameObject.AddComponent<NetworkAvatar>();
+        //     avatar.avatarID = avatarID;
+        //     avatar.mono = mono;
+        //     avatar.gameObject.layer = LayerMask.NameToLayer("Player");
+        //     return avatar;   
+        // }
     }
 
     public void RecycleAvatar(NetworkAvatar avatar)
     {
-        lst.Add(avatar);
+        //lst.Add(avatar);
+        GetQArrayByID(avatar.avatarID).Enqueue(avatar);
         if (avatar.mono.Player != null)
         {
             avatar.mono.Player.Play("idle");   
@@ -177,13 +228,27 @@ public class AvatarPool
 
     public void OnDestroy()
     {
-        if (lst != null && lst.Count > 0)
+        if(qArray == null) return;
+        
+        for (int i = 0; i < qArray.Length; i++)
         {
-            for (int i = 0; i < lst.Count; i++)
+            if (qArray[i] != null && qArray[i].Count > 0)
             {
-                GameObject.Destroy(lst[i].gameObject);
+                while (qArray[i].Count > 0)
+                {
+                    NetworkAvatar avatar = qArray[i].Dequeue();
+                    GameObject.Destroy(avatar.gameObject);
+                }
             }
         }
+        
+        // if (lst != null && lst.Count > 0)
+        // {
+        //     for (int i = 0; i < lst.Count; i++)
+        //     {
+        //         GameObject.Destroy(lst[i].gameObject);
+        //     }
+        // }
     }
 
 }
